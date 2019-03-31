@@ -1,0 +1,22 @@
+{
+  "name": "music-streaming",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/obbap1/upload-download.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/obbap1/upload-download/issues"
+  },
+  "homepage": "https://github.com/obbap1/upload-download#readme",
+  "dependencies": {
+    "busboy": "^0.3.0"
+  }
+}
