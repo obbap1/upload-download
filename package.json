@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/obbap1/upload-download#readme",
   "dependencies": {
-    "busboy": "^0.3.0"
+    "busboy": "^0.3.0",
+    "shelljs": "^0.8.3"
   }
 }

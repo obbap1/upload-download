@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const Busboy = require('busboy');
+const shell = require('shelljs');
 
 const port = 3000;
 
@@ -19,7 +20,7 @@ const server = http.createServer((req, res) => {
           file.pipe(fs.createWriteStream(saveTo));
         } else {
           console.log('already here');
-          res.end('File already exists!');
+          res.write('File already exists!');
         }
       });
 
@@ -39,7 +40,17 @@ const server = http.createServer((req, res) => {
   }
 
   // See songs
+  if (url === '/list' && method === 'GET') {
+    const allSongs = [];
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    shell.cd('songs');
+    shell.ls('*.mp3').forEach((file) => {
+      res.write(file);
+    });
+    shell.cd('..');
 
+    res.end();
+  }
 
   // Download songs
 });
