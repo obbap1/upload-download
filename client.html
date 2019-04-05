@@ -1,14 +1,112 @@
+<html>
+
+  <head>
+    <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    form label {
+      margin: 5px 10px 5px 0;
+
+    }
+
+    form input {
+      vertical-align: middle;
+      margin: 5px 10px 5px 0;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid purple;
+    }
+
+    form button {
+      padding: 10px 20px;
+      background-color: dodgerblue;
+      border: 1px solid #ddd;
+      color: white;
+    }
+
+    form button:hover {
+      background-color: royalblue;
+    }
+
+    #songDiv{
+      visibility: hidden;
+    }
+
+  </style>
+  </head>
+
+  <body>
+
+    <form method="POST"
+      action="http://localhost:3000/upload"
+      enctype="multipart/form-data">
+      <label>Name: <input name="myTextField" value="Test"></label>
+      <label><input type="checkbox" name="myCheckBox"> Check</label>
+      <label>Upload file: <input type="file" name="myFile"
+          onchange="handleFiles(this.files)"></label>
+      <button>Send the file</button>
+
+    </form>
+    <hr>
+    <button>See available songs</button>
+
+    <div id="songsDiv">
+
+    </div>
+
+
+    <script>
+
+      function handleFiles(files) {
+        const verifyAudio = [...files].every(file => file.type.startsWith('audio/'));
+
+        if (!verifyAudio) return alert('Oops! Only Audio files are permitted');
+
+        filesToSubmit = files;
+      }
+
+      let filesToSubmit = null;
+      const button = document.getElementsByTagName('button');
+
+      button[0].addEventListener('click', (e) => {
+        e.preventDefault();
+
+        if (!filesToSubmit) return alert('No valid files');
+
+        [...filesToSubmit].forEach((file) => {
+          const formElement = document.querySelector('form');
+
+          const formData = new FormData(formElement);
+
+          postData('http://localhost:3000/upload', formData)
+            .then(data => console.log({data}) // JSON-string from `response.json()` call
+            .catch(error => console.error(error));
+        });
+      });
+
+
+      function postData(url = '', data = {}) {
+        // Default options are marked with *
+        return fetch(url, {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          body: data, // body data type must match "Content-Type" header
+        })
+          .then(response => response.json()); // parses JSON response into native Javascript objects
+      }
+
+  </script>
+
+  </body>
 
 
 
-<form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
-    <label>Name: <input name="myTextField" value="Test"></label>
-    <label><input type="checkbox" name="myCheckBox"> Check</label>
-    <label>Upload file: <input type="file" name="myFile" value="test.txt"></label>
-    <button>Send the file</button>
-
-</form>
-
-<script>
-
-</script>
+</html>

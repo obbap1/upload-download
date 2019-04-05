@@ -7,13 +7,15 @@ const shell = require('shelljs');
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  const { url, method } = req;
+  const { url, method, headers } = req;
 
   // Upload songs
   if (url === '/upload' && method === 'POST') {
-    const busboy = new Busboy({ headers: req.headers });
+    const busboy = new Busboy({ headers });
 
     busboy.on('file', (__, file, filename, ___, mimetype) => {
+      console.log(`file found ${filename}`);
+
       fs.open(`${path.join(__dirname, './songs', filename)}`, 'r', (err, _) => {
         if (err && err.code === 'ENOENT') {
           const saveTo = path.join(__dirname, './songs', filename);
@@ -32,8 +34,8 @@ const server = http.createServer((req, res) => {
 
     busboy.on('finish', () => {
       console.log('Done parsing form!!!');
+      res.setHeader('Content-Type', 'text/plain');
       res.end('Your File has been uploaded successfully');
-      res.writeHead(303, { Connection: 'close', Location: '/' });
     });
 
     req.pipe(busboy);
@@ -41,7 +43,6 @@ const server = http.createServer((req, res) => {
 
   // See songs
   if (url === '/list' && method === 'GET') {
-    const allSongs = [];
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     shell.cd('songs');
     shell.ls('*.mp3').forEach((file) => {
