@@ -43,10 +43,10 @@ const server = http.createServer((req, res) => {
 
   // See songs
   if (url === '/list' && method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.writeHead(200);
     shell.cd('songs');
     shell.ls('*.mp3').forEach((file) => {
-      res.write(file);
+      res.write(`<button>${file}</button>`);
     });
     shell.cd('..');
 
